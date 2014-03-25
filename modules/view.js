@@ -19,17 +19,24 @@
   // calculate the focal character index
   function calculatePivot (word) {
     var l = word.length;
+    var pivot = -1;
     if (l < 2) {
-      return 0;
+      pivot = 0;
     } else if (l < 6) {
-      return 1;
+      pivot = 1;
     } else if (l < 10) {
-      return 2;
+      pivot = 2;
     } else if (l < 14) {
-      return 3;
+      pivot = 3;
     } else {
-      return 4;
+      pivot = 4;
     }
+    // It seems to me like shifting multi-word chunks over by one is a little
+    // bit better.
+    if (word.indexOf(' ') > 1) {
+      pivot += 1;
+    }
+    return pivot;
   }
 
 
