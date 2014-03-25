@@ -193,6 +193,32 @@
                         // long dashes ↓
     var tokens = text.match(/["«»“”\(\)\/–—]|--+|\n+|[^\s"“«»”\(\)\/–—]+/g);
 
+    // Some code to test out combining short words into the same token.
+    var new_tokens = [];
+    var charLimit = 8;
+    for (var i=0; i<tokens.length; i++) {
+      // If this token is not alphanumeric, don't mess with it.
+      if (!tokens[i].match(/^[a-z0-9]+$/i)) {
+        new_tokens.push(tokens[i]);
+        continue;
+      }
+      var new_token = tokens[i];
+      // Now, see if we can expand the token by adding the next word or two.
+      while (i < tokens.length - 1) {
+        if (!tokens[i+1].match(/^[a-z0-9]+$/i)) {
+          break;
+        }
+        var test_new_token = new_token + " " + tokens[i+1];
+        if (test_new_token.length > charLimit) {
+          break;
+        }
+        new_token = test_new_token;
+        i++;
+      }
+      new_tokens.push(new_token);
+    }
+    tokens = new_tokens;
+
     var $ = ($instructionator) ? $instructionator :  new Instructionator();
 
     // doesn't handle nested double quotes, but that junk is *rare*;
