@@ -34,7 +34,7 @@
     // It seems to me like shifting multi-word chunks over by one is a little
     // bit better.
     if (word.indexOf(' ') > 1) {
-      pivot += 1;
+      pivot += 0;
     }
     return pivot;
   }
